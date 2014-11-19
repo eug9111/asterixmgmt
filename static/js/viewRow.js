@@ -5,10 +5,10 @@ angular.module('asterface')
     controller: 'RowController'
   });
 }])
-.controller('RowController', function($scope, $routeParams){
-  $scope.rowId = $routeParams.rid;
-  
+.controller('RowController', ['$scope', '$routeParams', 'base', function($scope, $routeParams, base){
+  $scope.record = base.records[$routeParams.rid];
+
   $scope.back = function(){
     window.history.back();
   };
-})
+}])

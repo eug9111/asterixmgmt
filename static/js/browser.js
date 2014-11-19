@@ -11,9 +11,14 @@ angular.module('asterface')
   var A = asterix.db;
   $scope.insert.extraFields = [];
 
-  $scope.getPKValue = function(record)
+  $scope.getPKFields = function()
   {
-    var PKfields = base.datasets[base.currentDataset].InternalDetails.PrimaryKey.orderedlist;
+    return base.datasets[base.currentDataset].InternalDetails.PrimaryKey.orderedlist;
+  }
+
+  $scope.getPKValues = function(record)
+  {
+    var PKfields = $scope.getPKFields();
     return PKfields.map(function(pk){
       if(typeof record[pk] == 'string'){
         return record[pk];
@@ -21,10 +26,12 @@ angular.module('asterface')
       else if(asterix.extractNumber(record[pk]) !== false){
         return asterix.extractNumber(record[pk]).toString();
       }
-      return false;
+      else{
+        return 'Non-simple or unknown Asterix PK type';
+      }
     }).filter(function(value){
       return value != false;
-    }).join(', ');
+    });
   }
 
   $scope.insert.update = function()
@@ -65,7 +72,7 @@ angular.module('asterface')
     var pk = base.datasets[base.currentDataset].InternalDetails.PrimaryKey.orderedlist;
     var record = base.records[rid];
     var comps = [];
-    
+
     for(var k in pk)
     {
       var key = pk[k];
@@ -85,7 +92,7 @@ angular.module('asterface')
     where.and(comps);
 
     var delStmt = new DeleteStatement("$r", base.currentDataverse + '.' + base.currentDataset, where);
-    alert(delStmt.val());
+    console.log(delStmt.val());
     asterix.del(delStmt.val()).then(function(){
       base.loadRecords($scope.browsing.paging.itemsPerPage, $scope.browsing.paging.page);
     });
