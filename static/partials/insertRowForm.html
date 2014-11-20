@@ -7,16 +7,14 @@
       <td class="field-name">{{ field.FieldName }} ({{field.FieldType}})</td>
       <td><input class="insert-field" fieldtype="{{field.FieldType}}" name="{{field.FieldName}}"></td>
     </tr>
+
+    <tr ng-repeat="field in insert.extraFields" class="extra-field">
+      <th>{{ field.FieldName }} ({{field.FieldType}})</th>
+      <td>
+        <input class="insert-field-extra" fieldtype="{{field.FieldType}}" name="{{field.FieldName}}">
+      </td>
+    </tr>
   </table>
-
-  <div ng-if="insert.isOpen">
-    <hr>
-    <div ng-repeat="field in insert.extraFields">
-      <label>{{ field.FieldName }} ({{field.FieldType}})</label>
-      <input class="insert-field-extra" fieldtype="{{field.FieldType}}" name="{{field.FieldName}}">
-    </div>
-  </div>
-
 
   <div ng-if="insert.isOpen">
 
@@ -58,5 +56,5 @@
 <div class="modal-footer">
   <button ng-click="doInsert(true)" class="btn btn-primary">Insert and Close</button>
   <button ng-click="doInsert(false)" class="btn btn-default">Insert and Insert More</button>
-  <button ng-click="$dismiss()" class="btn btn-cancel">Cancel</button>
+  <button ng-click="$dismiss()" class="btn btn-default">Cancel</button>
 </div>

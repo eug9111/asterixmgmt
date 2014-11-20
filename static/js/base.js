@@ -90,7 +90,14 @@ function($scope, $http, $location, $modal, base){
 	{
     if(base.currentDataverse == '#newdataverse')
     {
-      $location.path('/newdataverse');
+      var modal = $modal.open({
+        templateUrl: '/static/partials/newDataverse.html',
+        controller: 'NewDataverseController',
+      });
+      modal.result.then(function(){
+        base.loadDataverses();
+        
+      });
     }
     else
     {
@@ -116,7 +123,7 @@ function($scope, $http, $location, $modal, base){
         return;
       base.loadDatasets();
     }, function(reason){
-      alert(reason);
+      console.log(reason);
     });
     //$location.path('/newdataset');
   };
@@ -133,7 +140,7 @@ function($scope, $http, $location, $modal, base){
         return;
       base.loadDatatypes();
     }, function(reason){
-      alert(reason);
+      console.log(reason);
     });
   };
 

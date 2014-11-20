@@ -120,7 +120,11 @@ angular.module('asterface', ['ngSanitize', 'ngRoute', 'ui.bootstrap'])
         );
       }
       var dataString = sprintf('insert into dataset %s.%s ({%s})', dataverse, dataset, dataFlattened.join(','));
-      return request('/update', {statements: dataString});
+      return request('/update', {statements: dataString}).then(function(response){
+        if(response.data['error-code']){
+          throw {asterixError: response.data.summary};
+        }
+      });
     },
     del: function(query){
       return request('/update', {statements: query});

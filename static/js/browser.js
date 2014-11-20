@@ -28,7 +28,7 @@ function($scope, $location, $modal, asterix, types, base){
         return 'Non-simple or unknown Asterix PK type';
       }
     }).filter(function(value){
-      return value != false;
+      return value !== false;
     });
   };
 
@@ -42,6 +42,10 @@ function($scope, $location, $modal, asterix, types, base){
     modal.result.then(function(){
       $scope.browsing.paging.page = 1;
       base.loadRecords($scope.browsing.paging.itemsPerPage, $scope.browsing.paging.page);
+    }, function(reason){
+      if(typeof reason == 'object' && reason.hasOwnProperty('asterixError')){
+        alert(reason.asterixError);
+      }
     });
   };
 
@@ -57,6 +61,8 @@ function($scope, $location, $modal, asterix, types, base){
       var val = false;
 
       // support integers
+      //!TODO convert numbers into the respective int8,int16,int32, etc...
+      // also support other types.
       if(asterix.extractNumber(record[key]) !== false) val = asterix.extractNumber(record[key]);
       else if(typeof record[key] == "string") val = '"' + record[key] + '"';
       else alert("Unknown value (" + key + "): " + record[key]);
@@ -144,6 +150,8 @@ function($scope, asterix, base, types){
         $scope.alerts.push({type: 'success', msg: 'Successfully inserted row'});
         $scope.clearForm();
       }
+    }, function(err){
+      $scope.$dismiss(err);
     })
   };
 

@@ -2,7 +2,7 @@
 <form ng-submit="query.loadQuery()">
   <textarea ng-model="query.txt" class="query-box">
   </textarea>
-  <button type="submit">Query!</button>
+  <button class="btn btn-primary" type="submit">Query!</button>
 </form>
 
 <div class="record" ng-repeat="record in query.results">

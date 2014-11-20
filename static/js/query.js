@@ -13,7 +13,7 @@ angular.module('asterface')
   {
     asterix.query(base.currentDataverse, $scope.query.txt)
     .then(function(results){
-      $scope.query.results = results.data;
+      $scope.query.results = results;
     });
   };
 }]);

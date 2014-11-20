@@ -137,24 +137,11 @@ th{
 }
 
 th.pk{
-  background:darkgray;
+  background:darkgreen;
 }
 
 tr.even{
   background:lightgrey;
-}
-
-button.magnify-record{
-  background:green;
-}
-
-button.delete-record{
-  background:red;
-}
-
-button.control{
-  font-weight:bold;
-  color:white;
 }
 
 span.null{
@@ -165,4 +152,8 @@ span.null{
 span.boolean{
   color:darkblue;
   font-weight:bold;
+}
+
+tr.extra-field th{
+  background:darkred;
 }

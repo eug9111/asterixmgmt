@@ -1,8 +1,10 @@
 {
-  "name": "Asterix Manager",
-  "version": "1",
+  "name": "Asterix-Manager",
+  "version": "0.0.1",
   "homepage": "https://github.com/eug9111/asterixmgmt/",
+  "private": true,
   "dependencies": {
-    "mime": "*"
+    "mime": "*",
+    "serve-static": "*"
   }
 }

@@ -36,7 +36,6 @@
       <select name="dataverse-selector" ng-model="base.currentDataverse" ng-change="loadDataverse();">
         <option ng-repeat="dv in base.dataverses" ng-value="dv.DataverseName">{{dv.DataverseName}}
         </option>
-        <option value="#null">---</option>
         <option value="#newdataverse">New Dataverse</option>
       </select>
 
@@ -45,9 +44,9 @@
       </select>
 
       <span ng-show="base.currentDataverse">
-        <button ng-click="createDataset()">New Dataset</button>
-        <button ng-click="createDatatype()">New Datatype</button>
-        <button ng-click="query()">Query</button>
+        <button ng-click="createDataset()" class="btn btn-default btn-sm">New Dataset</button>
+        <button ng-click="createDatatype()" class="btn btn-default btn-sm">New Datatype</button>
+        <button ng-click="query()" class="btn btn-default btn-sm">Query</button>
       </span>
     </div>
 
