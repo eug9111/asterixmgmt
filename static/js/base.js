@@ -91,12 +91,12 @@ function($scope, $http, $location, $modal, base){
     if(base.currentDataverse == '#newdataverse')
     {
       var modal = $modal.open({
-        templateUrl: '/static/partials/newDataverse.html',
+        templateUrl: '/partials/newDataverse.html',
         controller: 'NewDataverseController',
       });
       modal.result.then(function(){
         base.loadDataverses();
-        
+
       });
     }
     else
@@ -113,7 +113,7 @@ function($scope, $http, $location, $modal, base){
 
   $scope.createDataset = function(){
     var modal = $modal.open({
-      templateUrl: '/static/partials/datasetform.html',
+      templateUrl: '/partials/datasetform.html',
       controller: 'NewDatasetController',
       size: 'lg',
     });
@@ -130,7 +130,7 @@ function($scope, $http, $location, $modal, base){
 
   $scope.createDatatype = function(){
     var modal = $modal.open({
-      templateUrl: '/static/partials/datatypeform.html',
+      templateUrl: '/partials/datatypeform.html',
       controller: 'NewDatatypeController',
       size: 'lg'
     });

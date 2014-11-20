@@ -3,7 +3,7 @@
 angular.module('asterface')
 .config(['$routeProvider', function($routeProvider){
   $routeProvider.when('/browse', {
-    templateUrl: '/static/partials/browser.html',
+    templateUrl: '/partials/browser.html',
     controller: 'BrowseController'
   });
 }])
@@ -34,7 +34,7 @@ function($scope, $location, $modal, asterix, types, base){
 
   $scope.loadInsertForm = function(){
     var modal = $modal.open({
-      templateUrl:'/static/partials/insertRowForm.html',
+      templateUrl:'/partials/insertRowForm.html',
       controller: 'InsertRowController',
       size: 'lg'
     });

@@ -2,7 +2,7 @@ angular.module('asterface')
 /*
 .config(['$routeProvider', function($routeProvider){
   $routeProvider.when('/newdataset', {
-    templateUrl:  '/static/partials/datasetform.html',
+    templateUrl:  '/partials/datasetform.html',
     controller: 'NewDatasetController'
   });
 }])

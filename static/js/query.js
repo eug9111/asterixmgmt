@@ -1,7 +1,7 @@
 angular.module('asterface')
 .config(['$routeProvider', function($routeProvider){
   $routeProvider.when('/query', {
-    templateUrl: '/static/partials/query.html',
+    templateUrl: '/partials/query.html',
     controller: 'QueryController'
   });
 }])

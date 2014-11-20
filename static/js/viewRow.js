@@ -1,7 +1,7 @@
 angular.module('asterface')
 .config(['$routeProvider', function($routeProvider){
   $routeProvider.when('/row/:rid', {
-    templateUrl: '/static/partials/viewrow.html',
+    templateUrl: '/partials/viewrow.html',
     controller: 'RowController'
   });
 }])

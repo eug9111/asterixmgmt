@@ -60,7 +60,7 @@ angular.module('asterface', ['ngSanitize', 'ngRoute', 'ui.bootstrap'])
 .factory('asterix', ['$http', function($http){
   function request(endpoint, params){
     return $http({
-      url: endpoint,
+      url: '/api' + endpoint,
       params: params,
     }).catch(function(error){
       console.log('Failed to get response from Asterix backend');
