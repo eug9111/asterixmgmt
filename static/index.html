@@ -45,9 +45,9 @@
       </select>
 
       <span ng-show="base.currentDataverse">
-        <a href="#/newdataset">New Dataset</a>
-        <a href="#/newdatatype">New Datatype</a>
-        <a href="#/query">Query</a>
+        <button ng-click="createDataset()">New Dataset</button>
+        <button ng-click="createDatatype()">New Datatype</button>
+        <button ng-click="query()">Query</button>
       </span>
     </div>
 

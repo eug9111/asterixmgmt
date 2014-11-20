@@ -24,7 +24,6 @@ body div.browser-bar
   background:navy;
   padding:0.3em 1em;
   padding-right:2em;
-  color:white;
 }
 
 body div.browser-bar select
@@ -134,5 +133,36 @@ td, th{
 th{
   background:black;
   color:white;
+  font-weight:bold;
+}
+
+th.pk{
+  background:darkgray;
+}
+
+tr.even{
+  background:lightgrey;
+}
+
+button.magnify-record{
+  background:green;
+}
+
+button.delete-record{
+  background:red;
+}
+
+button.control{
+  font-weight:bold;
+  color:white;
+}
+
+span.null{
+  text-transform:italic;
+  font-weight:bold;
+}
+
+span.boolean{
+  color:darkblue;
   font-weight:bold;
 }

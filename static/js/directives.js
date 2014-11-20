@@ -8,8 +8,17 @@ angular.module('asterface')
         // reset browser
         element.empty();
 
+        // print strings
         if(angular.isString(scope.value) || angular.isNumber(scope.value)){
           element.append('<span>'+ scope.value + '</span>');
+        }
+        // print booleans
+        else if(typeof(scope.value) == 'boolean'){
+          element.append('<span class="boolean">' + (scope.value? 'true' : 'false') + '</span>')
+        }
+        // nulls
+        else if(scope.value === null){
+          element.append('<span class="null">null</span>')
         }
         else if(angular.isObject(scope.value)){
           if(scope.value.hasOwnProperty('unorderedlist')){

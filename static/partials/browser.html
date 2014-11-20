@@ -64,20 +64,22 @@
   <!-- WORK ON A TABULAR VIEW -->
   <table class="record-container record-table" ng-show="base.records.length">
     <tr>
-      <th ng-repeat="pkField in getPKFields()" ng-bind="pkField">
+      <th ng-repeat="pkField in getPKFields()" ng-bind="pkField" class="pk">
       </th>
+
+      <th colspan="2">Controls</th>
     </tr>
 
-    <tr ng-repeat="record in base.records">
+    <tr ng-repeat="record in base.records" ng-class="{even: $index%2==0}">
       <td ng-repeat="pkValue in getPKValues(record)" ng-bind="pkValue">
       </td>
 
       <!-- controls -->
       <td>
-        <button class="magnify-record" ng-click="magnifyRecord($index)">View</button>
+        <button class="btn control magnify-record" ng-click="magnifyRecord($index)">View</button>
       </td>
       <td>
-        <button class="delete-record" ng-click="deleteRecord($index)">Delete</button>
+        <button class="btn control delete-record" ng-click="deleteRecord($index)">Delete</button>
       </td>
     </tr>
   </table>

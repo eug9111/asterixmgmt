@@ -65,7 +65,8 @@ angular.module('asterface')
 
   };
 }])
-.controller('BaseController', ['$scope', '$http', '$location', 'base', function($scope, $http, $location, base){
+.controller('BaseController', ['$scope', '$http', '$location', '$modal', 'base',
+function($scope, $http, $location, $modal, base){
   $scope.browsing = {
     paging: {
       itemsPerPage: 30,
@@ -116,5 +117,42 @@ angular.module('asterface')
   // load insert form if dataset is already present
   if(base.currentDataverse && base.currentDataset){
     $scope.loadInsertForm();
+  };
+
+  $scope.createDataset = function(){
+    var modal = $modal.open({
+      templateUrl: '/static/partials/datasetform.html',
+      controller: 'NewDatasetController',
+      size: 'lg',
+    });
+
+    modal.result.then(function(newDataset){
+      if(newDataset === false)
+        return;
+      base.loadDatasets();
+    }, function(reason){
+      alert(reason);
+    });
+    //$location.path('/newdataset');
+  };
+
+  $scope.createDatatype = function(){
+    var modal = $modal.open({
+      templateUrl: '/static/partials/datatypeform.html',
+      controller: 'NewDatatypeController',
+      size: 'lg'
+    })
+
+    modal.result.then(function(newDatatype){
+      if(newDatatype === false)
+        return;
+      base.loadDatatypes();
+    }, function(reason){
+      alert(reason);
+    });
+  };
+
+  $scope.query = function(){
+    $location.path('/query');
   }
 }]);

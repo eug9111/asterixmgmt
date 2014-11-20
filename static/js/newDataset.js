@@ -1,11 +1,14 @@
 angular.module('asterface')
+/*
 .config(['$routeProvider', function($routeProvider){
   $routeProvider.when('/newdataset', {
     templateUrl:  '/static/partials/datasetform.html',
     controller: 'NewDatasetController'
   });
 }])
-.controller('NewDatasetController', ['$scope', '$location', 'asterix', 'base', function($scope, $location, asterix, base){
+*/
+.controller('NewDatasetController', ['$scope', '$location', '$modalInstance', 'asterix', 'base',
+function($scope, $location, $modalInstance, asterix, base){
   $scope.datasetForm = {
     primaryKeys: [],
     newPrimaryKey: false
@@ -28,10 +31,18 @@ angular.module('asterface')
     );
 
     asterix.ddl(base.currentDataverse, query).then(function(result){
-      base.loadDatasets().then(function(){
-        base.currentDataset = $scope.datasetForm['name'];
-        $location.path('/browse');
-      })
+      $modalInstance.close($scope.datasetForm['name']);
     });
   };
-}])
+
+  $scope.datasetForm.getFields = function(){
+    return base.datatypes[$scope.datasetForm.type].Derived.Record.Fields.orderedlist
+  };
+
+  $scope.datasetForm.getTypes = function(){
+    var invalidDatasetType = /^(Field_|Type_)/;
+    return Object.keys(base.datatypes).filter(function(typeName){
+      return !invalidDatasetType.test(typeName);
+    });
+  };
+}]);

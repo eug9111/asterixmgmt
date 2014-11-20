@@ -1,12 +1,7 @@
 'use strict'
-angular.module('asterface')
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/newdatatype', {
-    templateUrl: '/static/partials/datatypeform.html',
-    controller: 'NewDatatypeController'
-  });
-}])
-.controller('NewDatatypeController', ['$scope', 'asterix', 'base', function($scope, asterix, base){
+angular.module('asterface').controller('NewDatatypeController', ['$scope', 'asterix', 'base',
+function($scope, asterix, base){
+  $scope.base = base;
   $scope.dataTypeForm = {
     name: "",
     fields: [],
@@ -32,8 +27,7 @@ angular.module('asterface')
     query += fields.join(',') + '}';
 
     asterix.ddl(base.currentDataverse, query).then(function(){
-      base.loadDatatypes();
-      alert("Successfully added type");
+      $scope.$close($scope.dataTypeForm.name);
     });
   };
 
@@ -51,4 +45,4 @@ angular.module('asterface')
     $scope.dataTypeForm.fields.splice(index, 1);
   }
 
-}])
+}]);
