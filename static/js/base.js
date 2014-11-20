@@ -101,22 +101,7 @@ function($scope, $http, $location, $modal, base){
 
 	$scope.loadDataset = function() {
     base.loadRecords($scope.browsing.paging.itemsPerPage, $scope.browsing.paging.page);
-    $scope.loadInsertForm();
     $location.path('/browse');
-  };
-
-  $scope.loadInsertForm = function()
-  {
-    var typeName = base.datasets[base.currentDataset].DataTypeName;
-    var type = base.datatypes[typeName];
-
-    $scope.insert.isOpen = type.Derived.Record.IsOpen;
-    $scope.insert.fields = type.Derived.Record.Fields.orderedlist;
-  };
-
-  // load insert form if dataset is already present
-  if(base.currentDataverse && base.currentDataset){
-    $scope.loadInsertForm();
   };
 
   $scope.createDataset = function(){
@@ -141,7 +126,7 @@ function($scope, $http, $location, $modal, base){
       templateUrl: '/static/partials/datatypeform.html',
       controller: 'NewDatatypeController',
       size: 'lg'
-    })
+    });
 
     modal.result.then(function(newDatatype){
       if(newDatatype === false)

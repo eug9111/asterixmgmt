@@ -8,57 +8,8 @@
   </form>
 
   <div class="dataset-control-bar" >
-    <button class="pure-button" ng-click="toggleForm()">+</button>
-    <div id="insert-box" collapse="!browsing.showInsertForm">
-      <table>
-        <tr ng-repeat="field in insert.fields">
-          <td class="field-name">{{ field.FieldName }} ({{field.FieldType}})</td>
-          <td><input class="insert-field" fieldtype="{{field.FieldType}}" name="{{field.FieldName}}"></td>
-        </tr>
-      </table>
-
-      <div ng-if="insert.isOpen">
-        <hr>
-        <div ng-repeat="field in insert.extraFields">
-          <label>{{ field.FieldName }} ({{field.FieldType}})</label>
-          <input class="insert-field-extra" fieldtype="{{field.FieldType}}" name="{{field.FieldName}}">
-        </div>
-      </div>
-      <button ng-click="insert.update()">Insert</button>
-
-      <div ng-if="insert.isOpen">
-
-        <form ng-submit="insert.addField()">
-          <fieldset>
-            <legend>New Field</legend>
-            <label>Field Name:</label> <input ng-model="insert.newField.Name" type="text">
-            <label>Field Type:</label>
-            <select ng-model="insert.newField.Type">
-              <option value="string">String</option>
-              <option value="int8">Int8</option>
-              <option value="int16">Int16</option>
-              <option value="int32">Int32</option>
-              <option value="int64">Int64</option>
-              <option value="float">Float</option>
-              <option value="double">Double</option>
-              <option value="point">Point</option>
-              <option value="line">Line</option>
-              <option value="circle">Circle</option>
-              <option value="polygon">Polygon</option>
-              <option value="date">Date</option>
-              <option value="time">Time</option>
-              <option value="datetime">Date/Time</option>
-              <option value="interval">Interval</option>
-              <option value="record">Record</option>
-              <option value="unorderedList">Unordered List</option>
-              <option value="orderedList">Ordered List</option>
-            </select>
-            <button type="submit" value="Add Field">Add Extra Field</button>
-          </fieldset>
-        </form>
-      </div>
-
-    </div>
+    <button class="pure-button" ng-click="loadInsertForm()">+</button>
+    
   </div>
 
   <!-- WORK ON A TABULAR VIEW -->

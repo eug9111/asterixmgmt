@@ -1,6 +1,10 @@
-<div ng-show="base.currentDataverse">
-  <h1>Creating New Datatype</h1>
-  <form ng-submit="createDatatype()">
+<div class="modal-header">
+  <h3 class="modal-title">Creating New Datatype</h3>
+</div>
+
+
+<div class="modal-body">
+  <form>
     <label>DataType Name</label><input ng-model="dataTypeForm.name"><br>
     <label>Open Datatype?</label><input type="checkbox" ng-model="dataTypeForm.isOpen">
     <table border="1">
@@ -18,7 +22,7 @@
         </td>
       </tr>
     </table>
-    <button type="submit">Create Datatype</button>
+
   </form>
 
   <fieldset>
@@ -48,4 +52,9 @@
     <label>Optional</label><input type="checkbox" ng-model="dataTypeForm.newFieldOptional">
     <input type="button" value="Add Field" ng-click="dataTypeForm.addField()">
   </fieldset>
+</div>
+
+<div class="modal-footer">
+  <button class="btn btn-primary" ng-click="createDatatype()">Create Datatype</button>
+  <button class="btn btn-cancel" ng-click="$dismiss('Canceled')">Cancel</button>
 </div>

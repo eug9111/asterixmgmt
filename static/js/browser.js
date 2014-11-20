@@ -7,17 +7,15 @@ angular.module('asterface')
     controller: 'BrowseController'
   });
 }])
-.controller('BrowseController', ['$scope', '$location', 'asterix', 'types', 'base', function($scope, $location, asterix, types, base){
+.controller('BrowseController', ['$scope', '$location', '$modal', 'asterix', 'types', 'base',
+function($scope, $location, $modal, asterix, types, base){
   var A = asterix.db;
-  $scope.insert.extraFields = [];
 
-  $scope.getPKFields = function()
-  {
+  $scope.getPKFields = function(){
     return base.datasets[base.currentDataset].InternalDetails.PrimaryKey.orderedlist;
-  }
+  };
 
-  $scope.getPKValues = function(record)
-  {
+  $scope.getPKValues = function(record){
     var PKfields = $scope.getPKFields();
     return PKfields.map(function(pk){
       if(typeof record[pk] == 'string'){
@@ -32,38 +30,18 @@ angular.module('asterface')
     }).filter(function(value){
       return value != false;
     });
-  }
-
-  $scope.insert.update = function()
-  {
-    var record = {};
-
-    $(".insert-field, .insert-field-extra").each(function(box){
-      var field = $(this);
-      var fieldType = field.attr("fieldtype");
-
-      switch(fieldType)
-      {
-      case "int8": case "int16": case "int32": case "int64": case "float": case "double": case "string":
-        record[ field.attr("name") ] = new types[fieldType](field.val());
-        break;
-      default:
-	  	  record[ field.attr("name") ] = new AExpression(field.val());
-        return;
-      }
-
-    });
-
-    asterix.insert(base.currentDataverse, base.currentDataset, record).then(function(result){
-      $scope.browsing.paging.page = 1;
-      base.loadRecords($scope.browsing.paging.itemsPerPage, $scope.browsing.paging.page);
-    })
   };
 
-  $scope.insert.addField = function(){
-    $scope.insert.extraFields.push({
-      FieldName: $scope.insert.newField.Name,
-      FieldType: $scope.insert.newField.Type
+  $scope.loadInsertForm = function(){
+    var modal = $modal.open({
+      templateUrl:'/static/partials/insertRowForm.html',
+      controller: 'InsertRowController',
+      size: 'lg'
+    });
+
+    modal.result.then(function(){
+      $scope.browsing.paging.page = 1;
+      base.loadRecords($scope.browsing.paging.itemsPerPage, $scope.browsing.paging.page);
     });
   };
 
@@ -101,10 +79,20 @@ angular.module('asterface')
   $scope.magnifyRecord = function (rid){
     $location.path('/row/' + rid);
   };
+}])
+.controller('InsertRowController', ['$scope', 'asterix', 'base', 'types',
+function($scope, asterix, base, types){
+  var typeName = base.datasets[base.currentDataset].DataTypeName;
+  var type = base.datatypes[typeName];
 
-  $scope.toggleForm = function() {
-    $scope.browsing.showInsertForm = !$scope.browsing.showInsertForm;
+  $scope.insert = {
+    extraFields: [],
+    newField: {},
+    isOpen: type.Derived.Record.IsOpen,
+    fields: type.Derived.Record.Fields.orderedlist
   };
+
+  $scope.alerts = [];
 
   $scope.getExtraFields = function(fields, exclude){
     var result = {}
@@ -120,4 +108,50 @@ angular.module('asterface')
 
     return result;
   };
-}])
+
+  $scope.addField = function(){
+    $scope.insert.extraFields.push({
+      FieldName: $scope.insert.newField.Name,
+      FieldType: $scope.insert.newField.Type
+    });
+  };
+
+
+  $scope.doInsert = function(closeAfter){
+    var record = {};
+
+    $(".insert-field, .insert-field-extra").each(function(box){
+      var field = $(this);
+      var fieldType = field.attr("fieldtype");
+
+      switch(fieldType)
+      {
+      case "int8": case "int16": case "int32": case "int64": case "float": case "double": case "string":
+        record[ field.attr("name") ] = new types[fieldType](field.val());
+        break;
+      default:
+        record[ field.attr("name") ] = new AExpression(field.val());
+        return;
+      }
+
+    });
+
+    asterix.insert(base.currentDataverse, base.currentDataset, record).then(function(){
+      if(closeAfter){
+        $scope.$close(true);
+      }
+      else{
+        $scope.alerts.push({type: 'success', msg: 'Successfully inserted row'});
+        $scope.clearForm();
+      }
+    })
+  };
+
+  $scope.closeAlert = function(index){
+    $scope.alerts.splice(index, 1);
+  }
+
+  $scope.clearForm = function(){
+    $('.insert-field, .insert-field-extra').val('');
+  }
+}]);
