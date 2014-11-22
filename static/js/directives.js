@@ -1,4 +1,13 @@
 angular.module('asterface')
+.directive('afInput', ['types', function(types){
+  return {
+    restrict: 'E',
+    templateUrl: 'partials/directives/afInput.html',
+    link: function(scope, element, attrs){
+      scope.type = attrs['type'];
+    }
+  };
+}])
 .directive('afAdm', ['$compile', 'asterix', function($compile, asterix){
   return {
     restrict: 'E',
