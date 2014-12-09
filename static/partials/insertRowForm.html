@@ -25,6 +25,7 @@
         <label>Field Type:</label>
         <select ng-model="insert.newField.Type">
           <option value="string">String</option>
+          <option value="boolean">Boolean</option>
           <option value="int8">Int8</option>
           <option value="int16">Int16</option>
           <option value="int32">Int32</option>
@@ -43,7 +44,7 @@
           <option value="unorderedList">Unordered List</option>
           <option value="orderedList">Ordered List</option>
         </select>
-        <button type="submit" value="Add Field">Add Extra Field</button>
+        <button type="submit" value="Add Field" ng-disabled="!insert.newField.Name || !insert.newField.Type">Add Extra Field</button>
       </fieldset>
     </form>
   </div>

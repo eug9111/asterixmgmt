@@ -79,6 +79,18 @@ function($scope, $http, $location, $modal, base){
   $scope.insert = {};
   $scope.base = base;
 
+  $scope.$watch('base.currentDataverse', function(){
+    if(base.currentDataverse){
+      $scope.loadDataverse();
+    }
+  });
+
+  $scope.$watch('base.currentDataset', function(){
+    if(base.currentDataset){
+      $scope.loadDataset();
+    }
+  });
+
   var loadDatabase = $scope.loadDatabase = function()
   {
     base.loadDataverses();

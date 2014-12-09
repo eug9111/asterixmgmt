@@ -1,0 +1,60 @@
+<script type="text/ng-template" id="form-element">
+  <div ng-switch on="type">
+    <div ng-switch-when="int8">
+      <input type="text" fieldtype="int8">
+    </div>
+
+    <div ng-switch-when="int16">
+      <input type="text" fieldtype="int16">
+    </div>
+
+    <div ng-switch-when="int32">
+      <input type="text" fieldtype="int32">
+    </div>
+
+    <div ng-switch-when="int64">
+      <input type="text" fieldtype="int64">
+    </div>
+
+    <div ng-switch-when="boolean">
+      <select>
+        <option value="true">True</option>
+        <option value="false">False</option>
+      </select>
+    </div>
+
+    <div ng-switch-when="float">
+      <input type="text" fieldtype="float">
+    </div>
+
+    <div ng-switch-when="double">
+      <input type="text" fieldtype="double">
+    </div>
+
+    <div ng-switch-when="string">
+      <input type="text" fieldtype="string">
+    </div>
+
+    <div ng-switch-when="record">
+      <div ng-repeat="(_, input) in fields" ng-include="'form-element'"></div>
+      <form ng-submit="addField(fields)">
+        <input type="text" ng-model="field-name">
+        <select ng-model="field-type">
+          <option ng-repeat="type in types.getTypes(base.currentDataverse)" ng-value="type" ng-bind="type">
+          </option>
+        </select>
+      </form>
+    </div>
+
+    <div ng-switch-when="orderedList">
+    </div>
+
+    <div ng-switch-when="unorderedList">
+    </div>
+
+    <div ng-switch-default>
+      Unknown field type <b ng-bind="type"></b>
+    </div>
+  </div>
+</script>
+<div ng-include="'form-element'"></div>

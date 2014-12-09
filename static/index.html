@@ -33,13 +33,13 @@
     </div>
 
     <div class="browser-bar">
-      <select name="dataverse-selector" ng-model="base.currentDataverse" ng-change="loadDataverse();">
+      <select name="dataverse-selector" ng-model="base.currentDataverse">
         <option ng-repeat="dv in base.dataverses" ng-value="dv.DataverseName">{{dv.DataverseName}}
         </option>
         <option value="#newdataverse">New Dataverse</option>
       </select>
 
-      <select name="dataset-selector" ng-model="base.currentDataset" ng-change="loadDataset();" ng-if="base.currentDataverse">
+      <select name="dataset-selector" ng-model="base.currentDataset" ng-if="base.currentDataverse">
         <option ng-repeat="ds in base.datasets" ng-value="ds.DatasetName" ng-bind="ds.DatasetName">{{ds.DatasetName}}</option>
       </select>
 

@@ -3,8 +3,10 @@ angular.module('asterface')
   return {
     restrict: 'E',
     templateUrl: 'partials/directives/afInput.html',
+    scope: {
+      type: '='
+    },
     link: function(scope, element, attrs){
-      scope.type = attrs['type'];
     }
   };
 }])
