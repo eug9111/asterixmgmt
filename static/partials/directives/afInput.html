@@ -36,41 +36,24 @@
     </div>
 
     <div ng-switch-when="point">
-      <input ng-model="field.value.x" type="number" placeholder="X coordinate">
-      <input ng-model="field.value.y" type="number" placeholder="Y coordinate">
+      <af-input-point model="field.value">
     </div>
 
     <div ng-switch-when="line">
-      Point 1: 
-      <input ng-model="field.value.x" type="number" placeholder="X coordinate">
-      <input ng-model="field.value.y" type="number" placeholder="Y coordinate">
-      <br>
-      Point 2:
-      <input ng-model="field.value.x" type="number" placeholder="X coordinate">
-      <input ng-model="field.value.y" type="number" placeholder="Y coordinate">
+      <af-input-line model="field.value">
     </div>
 
+<!--
     <div ng-switch-when="rectangle">
-      Bottom Left Corner Point:
-      <input ng-model="field.value.x" type="number" placeholder="X coordinate">
-      <input ng-model="field.value.y" type="number" placeholder="Y coordinate">
-      <br>
-      Top Right Corner Point:
-      <input ng-model="field.value.x" type="number" placeholder="X coordinate">
-      <input ng-model="field.value.y" type="number" placeholder="Y coordinate">
+      <af-input-rectangle model="field.value">
     </div>
 
     <div ng-switch-when="circle">
-      Center: 
-      <input ng-model="field.value.x" type="number" placeholder="X coordinate">
-      <input ng-model="field.value.y" type="number" placeholder="Y coordinate">
-      <br>
-      Radius: 
-      <input ng-model="field.value.radius" type="number" placeholder="Radius">
+      <af-input-circle model="field.value">
     </div>
 
     <div ng-switch-when="polygon">
-    <!-- TODO -->
+      <af-input-polygon model="field.value">
     </div>
 
     <div ng-switch-when="date">
@@ -82,8 +65,7 @@
     </div>
 
     <div ng-switch-when="datetime">
-      <input ng-model="field.value" type="text" placeholder="Date (e.g. 2014-12-31)">
-      <input ng-model="field.value" type="text" placeholder="HH:mm:ss (e.g. 12:30:00)">
+      <af-input-datetime model="field.value">
     </div>
 
     <div ng-switch-when="record">
@@ -102,7 +84,7 @@
 
     <div ng-switch-when="unorderedList">
     </div>
-
+-->
     <div ng-switch-default>
       Unknown field type <b ng-bind="type"></b>
     </div>

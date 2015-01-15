@@ -17,10 +17,12 @@ angular.module('asterface')
         return new Types[scope.type](scope.field.value);
       };
 
+
       // attach to form so form can get the value of the child element
       if(scope.$parent.registerField){
         scope.$parent.registerField(scope);
       }
+
     }
   };
 }])
@@ -112,6 +114,33 @@ angular.module('asterface')
           }
         }
       });
+    }
+  };
+}])
+.directive('afInputPoint', ['types', function(Types){
+  return {
+    restrict: 'E',
+    scope: {
+      model: '=',
+    },
+    templateUrl: 'partials/directives/inputs/point.html',
+    link: function(scope, element, attrs){
+      model = { x: null, y: null };
+    }
+  };
+}])
+.directive('afInputLine', ['types', function(Types){
+  return {
+    restrict: 'E',
+    scope: {
+      model: '=',
+    },
+    templateUrl: 'partials/directives/inputs/line.html',
+    link: function(scope, element, attrs){
+      model = { 
+        a: { x: null, y: null },
+        b: { x: null, y: null },
+      };
     }
   };
 }]);
