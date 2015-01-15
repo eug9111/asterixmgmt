@@ -1,38 +1,89 @@
 <script type="text/ng-template" id="form-element">
-  <div ng-switch on="type">
+  <div ng-switch on="field.type">
     <div ng-switch-when="int8">
-      <input type="text" fieldtype="int8">
+      <input ng-model="field.value" type="text" fieldtype="int8">
     </div>
 
     <div ng-switch-when="int16">
-      <input type="text" fieldtype="int16">
+      <input ng-model="field.value" type="text" fieldtype="int16">
     </div>
 
     <div ng-switch-when="int32">
-      <input type="text" fieldtype="int32">
+      <input ng-model="field.value" type="text" fieldtype="int32">
     </div>
 
     <div ng-switch-when="int64">
-      <input type="text" fieldtype="int64">
+      <input ng-model="field.value" type="text" fieldtype="int64">
     </div>
 
     <div ng-switch-when="boolean">
-      <select>
+      <select ng-model="field.value">
         <option value="true">True</option>
         <option value="false">False</option>
       </select>
     </div>
 
     <div ng-switch-when="float">
-      <input type="text" fieldtype="float">
+      <input ng-model="field.value"  type="text" fieldtype="float">
     </div>
 
     <div ng-switch-when="double">
-      <input type="text" fieldtype="double">
+      <input ng-model="field.value"  type="text" fieldtype="double">
     </div>
 
     <div ng-switch-when="string">
-      <input type="text" fieldtype="string">
+      <input ng-model="field.value"  type="text" fieldtype="string">
+    </div>
+
+    <div ng-switch-when="point">
+      <input ng-model="field.value.x" type="number" placeholder="X coordinate">
+      <input ng-model="field.value.y" type="number" placeholder="Y coordinate">
+    </div>
+
+    <div ng-switch-when="line">
+      Point 1: 
+      <input ng-model="field.value.x" type="number" placeholder="X coordinate">
+      <input ng-model="field.value.y" type="number" placeholder="Y coordinate">
+      <br>
+      Point 2:
+      <input ng-model="field.value.x" type="number" placeholder="X coordinate">
+      <input ng-model="field.value.y" type="number" placeholder="Y coordinate">
+    </div>
+
+    <div ng-switch-when="rectangle">
+      Bottom Left Corner Point:
+      <input ng-model="field.value.x" type="number" placeholder="X coordinate">
+      <input ng-model="field.value.y" type="number" placeholder="Y coordinate">
+      <br>
+      Top Right Corner Point:
+      <input ng-model="field.value.x" type="number" placeholder="X coordinate">
+      <input ng-model="field.value.y" type="number" placeholder="Y coordinate">
+    </div>
+
+    <div ng-switch-when="circle">
+      Center: 
+      <input ng-model="field.value.x" type="number" placeholder="X coordinate">
+      <input ng-model="field.value.y" type="number" placeholder="Y coordinate">
+      <br>
+      Radius: 
+      <input ng-model="field.value.radius" type="number" placeholder="Radius">
+    </div>
+
+    <div ng-switch-when="polygon">
+    <!-- TODO -->
+    </div>
+
+    <div ng-switch-when="date">
+      <input ng-model="field.value" type="text" placeholder="Date (e.g. 2014-12-31)">
+    </div>
+
+    <div ng-switch-when="time">
+      <input ng-model="field.value" type="text" placeholder="HH:mm:ss (e.g. 12:30:00)">
+    </div>
+
+    <div ng-switch-when="datetime">
+      <input ng-model="field.value" type="text" placeholder="Date (e.g. 2014-12-31)">
+      <input ng-model="field.value" type="text" placeholder="HH:mm:ss (e.g. 12:30:00)">
     </div>
 
     <div ng-switch-when="record">

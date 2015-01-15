@@ -19,33 +19,56 @@ angular.module('asterface', ['ngSanitize', 'ngRoute', 'ui.bootstrap'])
   var types = {
     int8: function(value){
       this.type = 'int8';
-      this.val = value;
+      this.val = parseInt(value);
     },
     int16: function(value){
       this.type = 'int16';
-      this.val = value;
+      this.val = parseInt(value);
     },
     int32: function(value){
       this.type = 'int32';
-      this.val = value;
+      this.val = parseInt(value);
     },
     int64: function(value){
       this.type = 'int64';
-      this.val = value;
+      this.val = parseInt(value);
     },
     float: function(value){
       this.type = 'float';
-      this.val = value;
+      this.val = parseFloat(value);
     },
     double: function(value){
       this.type = 'double';
-      this.val = value;
+      this.val = parseFloat(value);
     },
     string: function(value){
       this.value = value;
       this.toString = function(){
         return '"' + this.value + '"';
       }
+    },
+    record: function(value){
+      throw 'Creating record types are not implemented yet!';
+    },
+    bag: function(value){
+      throw 'Creating bag types are not implemented yet!';
+    },
+    orderedlist: function(value){
+      throw 'Creating ordered lists (arrays) are not implemented yet!';
+    },
+    getTypeName: function(obj){
+      var result = false;
+      if(angular.isObject(obj)){
+        var compoundTypeNames = ['int8', 'int16', 'int32', 'int64', 'float', 'double'];
+        compoundTypeNames.forEach(function(typeName){
+          if(obj.hasOwnProperty(typeName)){
+            result = typeName;
+          }
+        });
+        return result;
+
+      }
+      else if(angular.isString(obj)) return 'string';
     }
   };
   types.int8.prototype = NumberPrototype;
@@ -57,7 +80,7 @@ angular.module('asterface', ['ngSanitize', 'ngRoute', 'ui.bootstrap'])
 
   return types;
 })
-.factory('asterix', ['$http', function($http){
+.factory('asterix', ['$http', 'types', function($http, Types){
   function request(endpoint, params){
     return $http({
       url: '/api' + endpoint,
@@ -68,6 +91,21 @@ angular.module('asterface', ['ngSanitize', 'ngRoute', 'ui.bootstrap'])
   }
 
   return {
+    encodeADM: function(obj){
+      if(angular.isObject(obj)){
+        // check if number
+        var val = this.extractNumber(obj);
+        if(val !== false){
+          return new Types[Types.getTypeName(obj)](val).toString();
+        }
+      }
+      else if(angular.isString(obj)){
+        return obj;
+      }
+      else{
+        throw "Unknown ADM type. " + JSON.stringify(obj);
+      }
+    },
     extractNumber: function(obj){
       if(angular.isNumber(obj)) return obj;
       if(!angular.isObject(obj)) return false;
@@ -126,7 +164,18 @@ angular.module('asterface', ['ngSanitize', 'ngRoute', 'ui.bootstrap'])
         }
       });
     },
-    del: function(query){
+    del: function(dataverse, dataset, pk){
+      var comparisons = [];
+      var comparisonString = '';
+
+      for(var k in pk){
+        comparisons.push(
+          sprintf('$r.%s = %s', k, this.encodeADM(pk[k]))
+        );
+      }
+      comparisonString = comparisons.join(' and ');
+
+      var query = sprintf('delete $r from dataset %s.%s where %s', dataverse, dataset, comparisonString);
       return request('/update', {statements: query});
     }
   };

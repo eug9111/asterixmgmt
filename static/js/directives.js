@@ -1,12 +1,26 @@
 angular.module('asterface')
-.directive('afInput', ['types', function(types){
+.directive('afInput', ['types', function(Types){
   return {
     restrict: 'E',
     templateUrl: 'partials/directives/afInput.html',
     scope: {
-      type: '='
+      type: '=',
+      name: '@'
     },
     link: function(scope, element, attrs){
+      scope.field = {
+        type: scope.type,
+        value: null,
+      };
+      scope.getValue = function(){
+        // NEED TO REWRITE FOR MORE FLEXIBLITY
+        return new Types[scope.type](scope.field.value);
+      };
+
+      // attach to form so form can get the value of the child element
+      if(scope.$parent.registerField){
+        scope.$parent.registerField(scope);
+      }
     }
   };
 }])

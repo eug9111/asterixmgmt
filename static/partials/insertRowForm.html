@@ -5,13 +5,13 @@
   <table>
     <tr ng-repeat="field in insert.fields">
       <td class="field-name">{{ field.FieldName }} ({{field.FieldType}})</td>
-      <td><af-input type="field.FieldType" class="insert-field"></td>
+      <td><af-input name="{{field.FieldName}}" type="field.FieldType" class="insert-field"></td>
     </tr>
 
     <tr ng-repeat="field in insert.extraFields" class="extra-field">
       <th>{{ field.FieldName }} ({{field.FieldType}})</th>
       <td>
-        <af-input class="insert-field-extra" type="field.FieldType">
+        <af-input class="insert-field-extra" name="{{field.FieldName}}" type="field.FieldType">
       </td>
     </tr>
   </table>

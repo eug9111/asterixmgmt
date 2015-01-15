@@ -1,5 +1,10 @@
 <div class="browser-box" ng-if="base.currentDataset">
-  <form class="pure-form" id="paging-form">
+  <div class="dataset-control-bar" >
+    <button class="btn btn-primary" ng-click="loadInsertForm()">Insert</button>
+    <button type="button" class="btn btn-default" ng-click="loadLoadForm()">Load Data</button>
+
+  </div>
+  <form id="paging-form">
     <label for="ipp">Records Per Page</label>
     <input type="number" name="numdata-selector" ng-model="browsing.paging.itemsPerPage" ng-change="loadDataset()">
 
@@ -7,12 +12,7 @@
     <input type="number" name="page" ng-model="browsing.paging.page" ng-change="loadDataset()">
   </form>
 
-  <div class="dataset-control-bar" >
-    <button class="btn btn-primary" ng-click="loadInsertForm()">Insert</button>
 
-  </div>
-
-  <!-- WORK ON A TABULAR VIEW -->
   <table class="record-container record-table" ng-show="base.records.length">
     <tr>
       <th ng-repeat="pkField in getPKFields()" ng-bind="pkField" class="pk">

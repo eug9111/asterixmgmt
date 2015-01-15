@@ -32,6 +32,11 @@ function($scope, $location, $modal, asterix, types, base){
     });
   };
 
+  function reloadData(){
+    $scope.browsing.paging.page = 1;
+    base.loadRecords($scope.browsing.paging.itemsPerPage, $scope.browsing.paging.page);
+  }
+
   $scope.loadInsertForm = function(){
     var modal = $modal.open({
       templateUrl:'/partials/insertRowForm.html',
@@ -39,45 +44,35 @@ function($scope, $location, $modal, asterix, types, base){
       size: 'lg'
     });
 
-    modal.result.then(function(){
-      $scope.browsing.paging.page = 1;
-      base.loadRecords($scope.browsing.paging.itemsPerPage, $scope.browsing.paging.page);
-    }, function(reason){
+    modal.result.then(reloadData, function(reason){
       if(typeof reason == 'object' && reason.hasOwnProperty('asterixError')){
         alert(reason.asterixError);
       }
     });
   };
 
+  $scope.loadLoadForm = function(){
+    var modal = $modal.open({
+      templateUrl: '/partials/loadDataForm.html',
+      controller: 'LoadDataController',
+      size: 'lg'
+    });
+
+    modal.result.then(reloadData);
+  };
+
   $scope.deleteRecord = function(rid)
   {
     var pk = base.datasets[base.currentDataset].InternalDetails.PrimaryKey.orderedlist;
     var record = base.records[rid];
-    var comps = [];
+    var pkValue = {};
 
-    for(var k in pk)
-    {
+    for(var k in pk){
       var key = pk[k];
-      var val = false;
-
-      // support integers
-      //!TODO convert numbers into the respective int8,int16,int32, etc...
-      // also support other types.
-      if(asterix.extractNumber(record[key]) !== false) val = asterix.extractNumber(record[key]);
-      else if(typeof record[key] == "string") val = '"' + record[key] + '"';
-      else alert("Unknown value (" + key + "): " + record[key]);
-
-      if(val === false){ return; }
-
-      comps.push(new AExpression("$r." + key + "=" + val));
+      pkValue[key] = record[key];
     }
-
-    var where = new WhereClause();
-    where.and(comps);
-
-    var delStmt = new DeleteStatement("$r", base.currentDataverse + '.' + base.currentDataset, where);
-    console.log(delStmt.val());
-    asterix.del(delStmt.val()).then(function(){
+    
+    asterix.del(base.currentDataverse, base.currentDataset, pkValue).then(function(){
       base.loadRecords($scope.browsing.paging.itemsPerPage, $scope.browsing.paging.page);
     });
   };
@@ -95,7 +90,8 @@ function($scope, asterix, base, types){
     extraFields: [],
     newField: {},
     isOpen: type.Derived.Record.IsOpen,
-    fields: type.Derived.Record.Fields.orderedlist
+    fields: type.Derived.Record.Fields.orderedlist,
+    afFields: []
   };
 
   $scope.alerts = [];
@@ -122,24 +118,14 @@ function($scope, asterix, base, types){
     });
   };
 
+  $scope.registerField = function(childScope){
+    $scope.insert.afFields.push(childScope);
+  };
 
   $scope.doInsert = function(closeAfter){
     var record = {};
-
-    $(".insert-field, .insert-field-extra").each(function(box){
-      var field = $(this);
-      var fieldType = field.attr("fieldtype");
-
-      switch(fieldType)
-      {
-      case "int8": case "int16": case "int32": case "int64": case "float": case "double": case "string":
-        record[ field.attr("name") ] = new types[fieldType](field.val());
-        break;
-      default:
-        record[ field.attr("name") ] = new AExpression(field.val());
-        return;
-      }
-
+    $scope.insert.afFields.forEach(function(scope){
+      record[scope.name] = scope.getValue();
     });
 
     asterix.insert(base.currentDataverse, base.currentDataset, record).then(function(){
@@ -162,4 +148,7 @@ function($scope, asterix, base, types){
   $scope.clearForm = function(){
     $('.insert-field, .insert-field-extra').val('');
   }
+}])
+.controller('LoadDataController', ['$scope', 'asterix', function($scope, Asterix){
+
 }]);
