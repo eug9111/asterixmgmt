@@ -48,6 +48,7 @@
       <option value="record">Record</option>
       <option value="unorderedList">Unordered List</option>
       <option value="orderedList">Ordered List</option>
+      <option ng-repeat="(customType, _) in base.datatypes" ng-bind="customType" ng-value="customType"></option>
     </select>
     <label>Optional</label><input type="checkbox" ng-model="dataTypeForm.newFieldOptional">
     <input type="button" value="Add Field" ng-click="dataTypeForm.addField()">

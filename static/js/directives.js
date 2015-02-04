@@ -125,9 +125,73 @@ angular.module('asterface')
     },
     templateUrl: 'partials/directives/inputs/point.html',
     link: function(scope, element, attrs){
-      model = { x: null, y: null };
+      scope.model = { x: null, y: null };
     }
   };
+}])
+.directive('afInputRectangle', ['types', function(Types){
+  return {
+    restrict: 'E',
+    scope: {
+      model: '=',
+    },
+    templateUrl: 'partials/directives/inputs/rectangle.html',
+    link: function(scope, element, attrs){
+      scope.model = {
+        a: { x: null, y: null },
+        b: { x: null, y: null }
+      }
+    }
+  };
+}])
+.directive('afInputCircle', ['types', function(Types){
+  return {
+    restrict: 'E',
+    scope: {
+      model: '=',
+    },
+    templateUrl: 'partials/directives/inputs/circle.html',
+    link: function(scope, element, attrs){
+      scope.model = {
+        radius: null,
+        center: {
+          x: null,
+          y: null
+        }
+      }
+    }
+  };
+}])
+.directive('afInputPolygon', ['types', function(Types){
+  return {
+    restrict: 'E',
+    scope: {
+      model: '=',
+    },
+    templateUrl: 'partials/directives/inputs/polygon.html',
+    link: function(scope, element, attrs){
+      scope.model = [];
+      scope.addField = function(){
+        scope.model.push({ x: null, y: null });
+      };
+
+      scope.removeField = function(index){
+        scope.model.splice(index);
+      };
+    },
+  }
+}])
+.directive('afInputDatetime', ['types', function(Types){
+  return {
+    restrict: 'E',
+    scope: {
+      model: '=',
+    },
+    templateUrl: 'partials/directives/inputs/datetime.html',
+    link: function(scope, element, attrs){
+      scope.model = { date: null, time: null };
+    }
+  }
 }])
 .directive('afInputLine', ['types', function(Types){
   return {
@@ -137,10 +201,53 @@ angular.module('asterface')
     },
     templateUrl: 'partials/directives/inputs/line.html',
     link: function(scope, element, attrs){
-      model = { 
+      scope.model = {
         a: { x: null, y: null },
         b: { x: null, y: null },
       };
     }
   };
-}]);
+}])
+.directive('afInputRecord', ['types', function(Types){
+  return {
+    restrict: 'E',
+    scope: {
+      model: '=',
+    },
+    templateUrl: 'partials/directives/inputs/record.html',
+    link: function(scope, element, attrs){
+      scope.model = Object.create(null);
+      scope.addField = function(){
+        scope.model[scope.fieldKey] = null;
+      };
+
+      scope.removeField = function(key){
+        delete scope.model[key];
+      };
+    }
+  };
+}])
+.directive('afInputOrderedList', ['types', function(Types){
+  return {
+    restrict: 'E',
+    scope: {
+      model: '=',
+    },
+    templateUrl: 'partials/directives/inputs/orderedList.html',
+    link: function(scope, element, attrs){
+      scope.model = [];
+    }
+  };
+}])
+.directive('afInputUnorderedList', ['types', function(Types){
+  return {
+    restrict: 'E',
+    scope: {
+      model: '=',
+    },
+    templateUrl: 'partials/directives/inputs/unorderedList.html',
+    link: function(scope, element, attrs){
+      scope.model = [];
+    }
+  };
+}])

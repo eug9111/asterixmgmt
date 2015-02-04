@@ -7,13 +7,29 @@ angular.module('asterface')
 }])
 .controller('QueryController', ['$scope', 'asterix', 'base', function($scope, asterix, base){
   $scope.query = {};
+  $scope.query.history = [];
+  $scope.query.oldQuery = false;
   $scope.asterix = asterix;
 
-  $scope.query.loadQuery = function()
-  {
-    asterix.query(base.currentDataverse, $scope.query.txt)
+  function doQuery(query){
+    return asterix.query(base.currentDataverse, query)
     .then(function(results){
       $scope.query.results = results;
     });
+  }
+
+  $scope.query.loadQuery = function(){
+    doQuery($scope.query.txt).then(function(){
+      $scope.query.history.push($scope.query.txt);
+    });
   };
+
+  $scope.query.loadHistory = function(){
+    doQuery($scope.query.oldQuery);
+  };
+
+  $scope.$watch('base.currentDataverse', function(){
+    $scope.query.history = [];
+  });
+
 }]);

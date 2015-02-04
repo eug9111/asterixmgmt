@@ -1,5 +1,11 @@
 <div ng-if="base.currentDataverse">Using <i ng-bind="base.currentDataverse"></i>.</div>
 <form ng-submit="query.loadQuery()">
+  <div ng-if="query.history.length>0">
+    <b>History</b>
+    <select ng-change="query.loadHistory()" ng-model="query.oldQuery">
+      <option ng-repeat="q in query.history track by $index" ng-value="q" ng-bind="q"></option>
+    </select>
+  </div>
   <textarea ng-model="query.txt" class="query-box">
   </textarea>
   <button class="btn btn-primary" type="submit">Query!</button>

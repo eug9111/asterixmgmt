@@ -1,0 +1,5 @@
+<div ng-repeat="point in model">
+  <af-input-point model="model[$index]"></af-input-point>
+  <button type="button" ng-click="removeField($index)">X</button>
+</div>
+<button type="button" ng-click="addField()">+</button>

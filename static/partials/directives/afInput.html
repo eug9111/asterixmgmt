@@ -42,8 +42,7 @@
     <div ng-switch-when="line">
       <af-input-line model="field.value">
     </div>
-
-<!--
+    
     <div ng-switch-when="rectangle">
       <af-input-rectangle model="field.value">
     </div>
@@ -69,22 +68,16 @@
     </div>
 
     <div ng-switch-when="record">
-      <div ng-repeat="(_, input) in fields" ng-include="'form-element'"></div>
-      <form ng-submit="addField(fields)">
-        <input type="text" ng-model="field-name">
-        <select ng-model="field-type">
-          <option ng-repeat="type in types.getTypes(base.currentDataverse)" ng-value="type" ng-bind="type">
-          </option>
-        </select>
-      </form>
+      <af-input-record model="field.value">
     </div>
 
     <div ng-switch-when="orderedList">
+      <af-input-ordered-list model="field.value">
     </div>
 
     <div ng-switch-when="unorderedList">
+      <af-input-unordered-list model="field.value">
     </div>
--->
     <div ng-switch-default>
       Unknown field type <b ng-bind="type"></b>
     </div>
