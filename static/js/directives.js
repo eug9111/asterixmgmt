@@ -7,14 +7,12 @@ angular.module('asterface')
       type: '=',
       name: '@'
     },
+    controller: 'AfInputController',
+    controllerAs: 'AfInputController',
     link: function(scope, element, attrs){
       scope.field = {
         type: scope.type,
         value: null,
-      };
-      scope.getValue = function(){
-        // NEED TO REWRITE FOR MORE FLEXIBLITY
-        return new Types[scope.type](scope.field.value);
       };
 
 
@@ -24,6 +22,16 @@ angular.module('asterface')
       }
 
     }
+  };
+}])
+.controller('AfInputController', ['$scope', 'base', function($scope, Base){
+  $scope.getValue = function(){
+    // NEED TO REWRITE FOR MORE FLEXIBLITY
+    return new Types[scope.type](scope.field.value);
+  };
+
+  $scope.doesTypeExist = function(type){
+    return Base.datatypes.hasOwnProperty(type);
   };
 }])
 .directive('afAdm', ['$compile', 'asterix', function($compile, asterix){
@@ -250,4 +258,72 @@ angular.module('asterface')
       scope.model = [];
     }
   };
+}])
+.directive('afInputType', ['types', 'base', function(types, base){
+  return {
+    restrict: 'E',
+    scope: {
+      type: '='
+    },
+    templateUrl: 'partials/directives/inputs/types.html',
+    link: function(scope, element, attrs){
+      scope.getTypes = function(){
+        return base.datatypes;
+      }
+
+      var admType = base.datatypes[scope.type];
+      scope.insert = {
+        extraFields: [],
+        newField: {},
+        isOpen: admType.Derived.Record.IsOpen,
+        fields: admType.Derived.Record.Fields.orderedlist,
+        afFields: []
+      };
+
+      scope.alerts = [];
+
+      scope.getExtraFields = function(fields, exclude){
+        var result = {}
+        for(var field in fields){
+          if(fields.hasOwnProperty(field)){
+            result[field] = true;
+          }
+        }
+
+        for(var i in exclude) {
+          delete result[exclude[i].FieldName];
+        }
+
+        return result;
+      };
+
+      scope.addField = function(){
+        scope.insert.extraFields.push({
+          FieldName: scope.insert.newField.Name,
+          FieldType: scope.insert.newField.Type
+        });
+      };
+
+      scope.registerField = function(childScope){
+        scope.insert.afFields.push(childScope);
+      };
+
+      scope.doInsert = function(closeAfter){
+        var record = {};
+        scope.insert.afFields.forEach(function(scope){
+          record[scope.name] = scope.getValue();
+        });
+
+        asterix.insert(base.currentDataverse, base.currentDataset, record);
+      };
+
+      scope.closeAlert = function(index){
+        scope.alerts.splice(index, 1);
+      }
+
+      scope.clearForm = function(){
+        $('.insert-field, .insert-field-extra').val('');
+      }
+    }
+  }
 }])

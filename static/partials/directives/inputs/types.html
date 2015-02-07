@@ -13,7 +13,6 @@
 </table>
 
 <div ng-if="insert.isOpen">
-
   <form ng-submit="addField()">
     <fieldset>
       <legend>New Field</legend>
@@ -39,12 +38,9 @@
         <option value="record">Record</option>
         <option value="unorderedList">Unordered List</option>
         <option value="orderedList">Ordered List</option>
+        <option ng-repeat="(customType, _) in getTypes()" ng-bind="customType" ng-value="customType"></option>
       </select>
       <button type="submit" value="Add Field" ng-disabled="!insert.newField.Name || !insert.newField.Type">Add Extra Field</button>
     </fieldset>
   </form>
-</div>
-
-<div class="alert-container">
-  <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)" ng-bind="alert.msg"></alert>
 </div>

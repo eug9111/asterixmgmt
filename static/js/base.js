@@ -91,14 +91,14 @@ function($scope, $http, $location, $modal, base){
     }
   });
 
-  var loadDatabase = $scope.loadDatabase = function()
+  this.loadDatabase = $scope.loadDatabase = function()
   {
     base.loadDataverses();
   };
 
-  loadDatabase();
+  this.loadDatabase();
 
-	$scope.loadDataverse = function()
+	this.loadDataverse = $scope.loadDataverse = function()
 	{
     if(base.currentDataverse == '#newdataverse')
     {

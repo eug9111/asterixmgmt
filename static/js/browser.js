@@ -41,6 +41,11 @@ function($scope, $location, $modal, asterix, types, base){
     var modal = $modal.open({
       templateUrl:'/partials/insertRowForm.html',
       controller: 'InsertRowController',
+      resolve: {
+        targetType: function(){
+          return base.datasets[base.currentDataset].DataTypeName;
+        },
+      },
       size: 'lg'
     });
 
@@ -71,7 +76,7 @@ function($scope, $location, $modal, asterix, types, base){
       var key = pk[k];
       pkValue[key] = record[key];
     }
-    
+
     asterix.del(base.currentDataverse, base.currentDataset, pkValue).then(function(){
       base.loadRecords($scope.browsing.paging.itemsPerPage, $scope.browsing.paging.page);
     });
@@ -81,9 +86,8 @@ function($scope, $location, $modal, asterix, types, base){
     $location.path('/row/' + rid);
   };
 }])
-.controller('InsertRowController', ['$scope', 'asterix', 'base', 'types',
-function($scope, asterix, base, types){
-  var typeName = base.datasets[base.currentDataset].DataTypeName;
+.controller('InsertRowController', ['$scope', 'asterix', 'base', 'types', 'targetType',
+function($scope, asterix, base, types, typeName){
   var type = base.datatypes[typeName];
 
   $scope.insert = {

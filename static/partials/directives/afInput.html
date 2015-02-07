@@ -42,7 +42,7 @@
     <div ng-switch-when="line">
       <af-input-line model="field.value">
     </div>
-    
+
     <div ng-switch-when="rectangle">
       <af-input-rectangle model="field.value">
     </div>
@@ -79,7 +79,12 @@
       <af-input-unordered-list model="field.value">
     </div>
     <div ng-switch-default>
-      Unknown field type <b ng-bind="type"></b>
+      <div ng-if="doesTypeExist(type)">
+        <af-input-type type="type">
+      </div>
+      <div ng-if="!doesTypeExist(type)">
+        Unknown field type <b ng-bind="type"></b>
+      </div>
     </div>
   </div>
 </script>
