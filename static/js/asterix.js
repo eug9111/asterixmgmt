@@ -48,7 +48,29 @@ angular.module('asterface', ['ngSanitize', 'ngRoute', 'ui.bootstrap'])
       }
     },
     record: function(value){
-      throw 'Creating record types are not implemented yet!';
+      this.value = value;
+      this.toString = function(){
+        var dataFlattened = [];
+        for(var row in this.value){
+          if(types.isBasicType(this.value[row].type)){
+            var tmp = new types[this.value[row].type](this.value[row].value);
+            dataFlattened.push(
+              sprintf('"%s": %s', row, tmp.toString())
+            );
+          }
+
+          // otherwise treat as record ! NOT GOOD
+          //else if(base.datatypes.indexOf(this.value[row].type) != -1){
+          else{
+            // is an existing type, just parse as a record
+            var tmp = new types['record'](this.value[row].value);
+            dataFlattened.push(
+              sprintf('"%s": %s', row, tmp.toString())
+            );
+          }
+        };
+        return '{' + dataFlattened.join(',') + '}';
+      };
     },
     bag: function(value){
       throw 'Creating bag types are not implemented yet!';
@@ -69,6 +91,10 @@ angular.module('asterface', ['ngSanitize', 'ngRoute', 'ui.bootstrap'])
 
       }
       else if(angular.isString(obj)) return 'string';
+    },
+    isBasicType: function(typeName){
+      // HACKY
+      return typeName in this;
     }
   };
   types.int8.prototype = NumberPrototype;
@@ -151,13 +177,8 @@ angular.module('asterface', ['ngSanitize', 'ngRoute', 'ui.bootstrap'])
       return request('/ddl', {ddl: queryString});
     },
     insert: function(dataverse, dataset, data){
-      var dataFlattened = [];
-      for(var row in data){
-        dataFlattened.push(
-          sprintf('"%s": %s', row, data[row].toString())
-        );
-      }
-      var dataString = sprintf('insert into dataset %s.%s ({%s})', dataverse, dataset, dataFlattened.join(','));
+      var record = new Types['record'](data);
+      var dataString = sprintf('insert into dataset %s.%s (%s)', dataverse, dataset, record.toString());
       return request('/update', {statements: dataString}).then(function(response){
         if(response.data['error-code']){
           throw {asterixError: response.data.summary};

@@ -41,6 +41,7 @@ function($scope, $location, $modal, asterix, types, base){
     var modal = $modal.open({
       templateUrl:'/partials/insertRowForm.html',
       controller: 'InsertRowController',
+      controllerAs: 'InsertRowController',
       resolve: {
         targetType: function(){
           return base.datasets[base.currentDataset].DataTypeName;
@@ -88,68 +89,31 @@ function($scope, $location, $modal, asterix, types, base){
 }])
 .controller('InsertRowController', ['$scope', 'asterix', 'base', 'types', 'targetType',
 function($scope, asterix, base, types, typeName){
-  var type = base.datatypes[typeName];
+  this.type = typeName;
+  this.value = {};
 
-  $scope.insert = {
-    extraFields: [],
-    newField: {},
-    isOpen: type.Derived.Record.IsOpen,
-    fields: type.Derived.Record.Fields.orderedlist,
-    afFields: []
-  };
+  this.alerts = [];
 
-  $scope.alerts = [];
-
-  $scope.getExtraFields = function(fields, exclude){
-    var result = {}
-    for(var field in fields){
-      if(fields.hasOwnProperty(field)){
-        result[field] = true;
-      }
-    }
-
-    for(var i in exclude) {
-      delete result[exclude[i].FieldName];
-    }
-
-    return result;
-  };
-
-  $scope.addField = function(){
-    $scope.insert.extraFields.push({
-      FieldName: $scope.insert.newField.Name,
-      FieldType: $scope.insert.newField.Type
-    });
-  };
-
-  $scope.registerField = function(childScope){
-    $scope.insert.afFields.push(childScope);
-  };
-
-  $scope.doInsert = function(closeAfter){
-    var record = {};
-    $scope.insert.afFields.forEach(function(scope){
-      record[scope.name] = scope.getValue();
-    });
-
-    asterix.insert(base.currentDataverse, base.currentDataset, record).then(function(){
+  this.doInsert = function(closeAfter){
+    var ctrl = this;
+    asterix.insert(base.currentDataverse, base.currentDataset, this.value).then(function(){
       if(closeAfter){
         $scope.$close(true);
       }
       else{
-        $scope.alerts.push({type: 'success', msg: 'Successfully inserted row'});
-        $scope.clearForm();
+        ctrl.alerts.push({type: 'success', msg: 'Successfully inserted row'});
+        ctrl.clearForm();
       }
     }, function(err){
       $scope.$dismiss(err);
     })
   };
 
-  $scope.closeAlert = function(index){
-    $scope.alerts.splice(index, 1);
+  this.closeAlert = function(index){
+    this.alerts.splice(index, 1);
   }
 
-  $scope.clearForm = function(){
+  this.clearForm = function(){
     $('.insert-field, .insert-field-extra').val('');
   }
 }])

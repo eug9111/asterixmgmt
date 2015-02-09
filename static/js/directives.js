@@ -4,35 +4,18 @@ angular.module('asterface')
     restrict: 'E',
     templateUrl: 'partials/directives/afInput.html',
     scope: {
-      type: '=',
-      name: '@'
+      field: '=',
     },
     controller: 'AfInputController',
-    controllerAs: 'AfInputController',
-    link: function(scope, element, attrs){
-      scope.field = {
-        type: scope.type,
-        value: null,
-      };
-
-
-      // attach to form so form can get the value of the child element
-      if(scope.$parent.registerField){
-        scope.$parent.registerField(scope);
-      }
-
-    }
+    controllerAs: 'InputController',
   };
 }])
 .controller('AfInputController', ['$scope', 'base', function($scope, Base){
-  $scope.getValue = function(){
-    // NEED TO REWRITE FOR MORE FLEXIBLITY
-    return new Types[scope.type](scope.field.value);
-  };
-
-  $scope.doesTypeExist = function(type){
+  this.doesTypeExist = function(type){
     return Base.datatypes.hasOwnProperty(type);
   };
+
+  this.field = $scope.field;
 }])
 .directive('afAdm', ['$compile', 'asterix', function($compile, asterix){
   return {
@@ -263,67 +246,35 @@ angular.module('asterface')
   return {
     restrict: 'E',
     scope: {
-      type: '='
+      type: '=',
+      model: '=',
     },
     templateUrl: 'partials/directives/inputs/types.html',
-    link: function(scope, element, attrs){
-      scope.getTypes = function(){
-        return base.datatypes;
-      }
+    controller: function($scope){
+      var admType = base.datatypes[$scope.type];
+      this.isOpen = admType.Derived.Record.IsOpen;
+      var fields = admType.Derived.Record.Fields.orderedlist;
+      this.newFieldName = null;
+      this.newFieldType = null;
+      this.value = $scope.model = {};
+      // copy over fields
+      fields.forEach(function(field){
+        $scope.model[field.FieldName] = { type: field.FieldType, value: null };
+      })
 
-      var admType = base.datatypes[scope.type];
-      scope.insert = {
-        extraFields: [],
-        newField: {},
-        isOpen: admType.Derived.Record.IsOpen,
-        fields: admType.Derived.Record.Fields.orderedlist,
-        afFields: []
-      };
+      if(this.isOpen){
+        this.addField = function(){
+          this.value[this.newFieldName] = { type: this.newFieldType, value: null };
+        };
 
-      scope.alerts = [];
-
-      scope.getExtraFields = function(fields, exclude){
-        var result = {}
-        for(var field in fields){
-          if(fields.hasOwnProperty(field)){
-            result[field] = true;
-          }
+        this.getTypes = function(){
+          return base.datatypes;
         }
-
-        for(var i in exclude) {
-          delete result[exclude[i].FieldName];
-        }
-
-        return result;
-      };
-
-      scope.addField = function(){
-        scope.insert.extraFields.push({
-          FieldName: scope.insert.newField.Name,
-          FieldType: scope.insert.newField.Type
-        });
-      };
-
-      scope.registerField = function(childScope){
-        scope.insert.afFields.push(childScope);
-      };
-
-      scope.doInsert = function(closeAfter){
-        var record = {};
-        scope.insert.afFields.forEach(function(scope){
-          record[scope.name] = scope.getValue();
-        });
-
-        asterix.insert(base.currentDataverse, base.currentDataset, record);
-      };
-
-      scope.closeAlert = function(index){
-        scope.alerts.splice(index, 1);
       }
+    },
+    controllerAs: 'InputTypeController',
+    link: function(scope, element, attrs, ctrl){
 
-      scope.clearForm = function(){
-        $('.insert-field, .insert-field-extra').val('');
-      }
     }
   }
 }])

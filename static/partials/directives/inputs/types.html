@@ -1,24 +1,17 @@
 <table>
-  <tr ng-repeat="field in insert.fields">
-    <td class="field-name">{{ field.FieldName }} ({{field.FieldType}})</td>
-    <td><af-input name="{{field.FieldName}}" type="field.FieldType" class="insert-field"></td>
-  </tr>
-
-  <tr ng-repeat="field in insert.extraFields" class="extra-field">
-    <th>{{ field.FieldName }} ({{field.FieldType}})</th>
-    <td>
-      <af-input class="insert-field-extra" name="{{field.FieldName}}" type="field.FieldType">
-    </td>
+  <tr ng-repeat="(fieldName, field) in InputTypeController.value">
+    <td class="field-name">{{ fieldName }} ({{ field.type }})</td>
+    <td><af-input field="field"></td>
   </tr>
 </table>
 
-<div ng-if="insert.isOpen">
-  <form ng-submit="addField()">
+<div ng-if="InputTypeController.isOpen">
+  <form ng-submit="InputTypeController.addField()">
     <fieldset>
       <legend>New Field</legend>
-      <label>Field Name:</label> <input ng-model="insert.newField.Name" type="text">
+      <label>Field Name:</label> <input ng-model="InputTypeController.newFieldName" type="text">
       <label>Field Type:</label>
-      <select ng-model="insert.newField.Type">
+      <select ng-model="InputTypeController.newFieldType">
         <option value="string">String</option>
         <option value="boolean">Boolean</option>
         <option value="int8">Int8</option>
@@ -38,9 +31,9 @@
         <option value="record">Record</option>
         <option value="unorderedList">Unordered List</option>
         <option value="orderedList">Ordered List</option>
-        <option ng-repeat="(customType, _) in getTypes()" ng-bind="customType" ng-value="customType"></option>
+        <option ng-repeat="(customType, _) in InputTypeController.getTypes()" ng-bind="customType" ng-value="customType"></option>
       </select>
-      <button type="submit" value="Add Field" ng-disabled="!insert.newField.Name || !insert.newField.Type">Add Extra Field</button>
+      <button type="submit" value="Add Field" ng-disabled="!InputTypeController.newFieldName || !InputTypeController.newFieldType">Add Extra Field</button>
     </fieldset>
   </form>
 </div>

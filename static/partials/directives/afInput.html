@@ -1,89 +1,89 @@
 <script type="text/ng-template" id="form-element">
-  <div ng-switch on="field.type">
+  <div ng-switch on="InputController.field.type">
     <div ng-switch-when="int8">
-      <input ng-model="field.value" type="text" fieldtype="int8">
+      <input ng-model="InputController.field.value" type="text" fieldtype="int8">
     </div>
 
     <div ng-switch-when="int16">
-      <input ng-model="field.value" type="text" fieldtype="int16">
+      <input ng-model="InputController.field.value" type="text" fieldtype="int16">
     </div>
 
     <div ng-switch-when="int32">
-      <input ng-model="field.value" type="text" fieldtype="int32">
+      <input ng-model="InputController.field.value" type="text" fieldtype="int32">
     </div>
 
     <div ng-switch-when="int64">
-      <input ng-model="field.value" type="text" fieldtype="int64">
+      <input ng-model="InputController.field.value" type="text" fieldtype="int64">
     </div>
 
     <div ng-switch-when="boolean">
-      <select ng-model="field.value">
+      <select ng-model="InputController.field.value">
         <option value="true">True</option>
         <option value="false">False</option>
       </select>
     </div>
 
     <div ng-switch-when="float">
-      <input ng-model="field.value"  type="text" fieldtype="float">
+      <input ng-model="InputController.field.value"  type="text" fieldtype="float">
     </div>
 
     <div ng-switch-when="double">
-      <input ng-model="field.value"  type="text" fieldtype="double">
+      <input ng-model="InputController.field.value"  type="text" fieldtype="double">
     </div>
 
     <div ng-switch-when="string">
-      <input ng-model="field.value"  type="text" fieldtype="string">
+      <input ng-model="InputController.field.value"  type="text" fieldtype="string">
     </div>
 
     <div ng-switch-when="point">
-      <af-input-point model="field.value">
+      <af-input-point model="InputController.field.value">
     </div>
 
     <div ng-switch-when="line">
-      <af-input-line model="field.value">
+      <af-input-line model="InputController.field.value">
     </div>
 
     <div ng-switch-when="rectangle">
-      <af-input-rectangle model="field.value">
+      <af-input-rectangle model="InputController.field.value">
     </div>
 
     <div ng-switch-when="circle">
-      <af-input-circle model="field.value">
+      <af-input-circle model="InputController.field.value">
     </div>
 
     <div ng-switch-when="polygon">
-      <af-input-polygon model="field.value">
+      <af-input-polygon model="InputController.field.value">
     </div>
 
     <div ng-switch-when="date">
-      <input ng-model="field.value" type="text" placeholder="Date (e.g. 2014-12-31)">
+      <input ng-model="InputController.field.value" type="text" placeholder="Date (e.g. 2014-12-31)">
     </div>
 
     <div ng-switch-when="time">
-      <input ng-model="field.value" type="text" placeholder="HH:mm:ss (e.g. 12:30:00)">
+      <input ng-model="InputController.field.value" type="text" placeholder="HH:mm:ss (e.g. 12:30:00)">
     </div>
 
     <div ng-switch-when="datetime">
-      <af-input-datetime model="field.value">
+      <af-input-datetime model="InputController.field.value">
     </div>
 
     <div ng-switch-when="record">
-      <af-input-record model="field.value">
+      <af-input-record model="InputController.field.value">
     </div>
 
     <div ng-switch-when="orderedList">
-      <af-input-ordered-list model="field.value">
+      <af-input-ordered-list model="InputController.field.value">
     </div>
 
     <div ng-switch-when="unorderedList">
-      <af-input-unordered-list model="field.value">
+      <af-input-unordered-list model="InputController.field.value">
     </div>
     <div ng-switch-default>
-      <div ng-if="doesTypeExist(type)">
-        <af-input-type type="type">
+      <div ng-if="InputController.doesTypeExist(InputController.field.type)">
+        <af-input-type type="InputController.field.type" model="InputController.field.value">
       </div>
-      <div ng-if="!doesTypeExist(type)">
-        Unknown field type <b ng-bind="type"></b>
+      <div ng-if="!InputController.doesTypeExist(InputController.field.type)">
+        Unknown field type <b ng-bind="InputController.field.type"></b>
       </div>
     </div>
   </div>

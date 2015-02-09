@@ -2,60 +2,11 @@
   <h3 class="modal-title">Insert Row</h3>
 </div>
 <div class="modal-body">
-  <table>
-    <tr ng-repeat="field in insert.fields">
-      <td class="field-name">{{ field.FieldName }} ({{field.FieldType}})</td>
-      <td><af-input name="{{field.FieldName}}" type="field.FieldType" class="insert-field"></td>
-    </tr>
-
-    <tr ng-repeat="field in insert.extraFields" class="extra-field">
-      <th>{{ field.FieldName }} ({{field.FieldType}})</th>
-      <td>
-        <af-input class="insert-field-extra" name="{{field.FieldName}}" type="field.FieldType">
-      </td>
-    </tr>
-  </table>
-
-  <div ng-if="insert.isOpen">
-
-    <form ng-submit="addField()">
-      <fieldset>
-        <legend>New Field</legend>
-        <label>Field Name:</label> <input ng-model="insert.newField.Name" type="text">
-        <label>Field Type:</label>
-        <select ng-model="insert.newField.Type">
-          <option value="string">String</option>
-          <option value="boolean">Boolean</option>
-          <option value="int8">Int8</option>
-          <option value="int16">Int16</option>
-          <option value="int32">Int32</option>
-          <option value="int64">Int64</option>
-          <option value="float">Float</option>
-          <option value="double">Double</option>
-          <option value="point">Point</option>
-          <option value="line">Line</option>
-          <option value="circle">Circle</option>
-          <option value="polygon">Polygon</option>
-          <option value="date">Date</option>
-          <option value="time">Time</option>
-          <option value="datetime">Date/Time</option>
-          <option value="interval">Interval</option>
-          <option value="record">Record</option>
-          <option value="unorderedList">Unordered List</option>
-          <option value="orderedList">Ordered List</option>
-        </select>
-        <button type="submit" value="Add Field" ng-disabled="!insert.newField.Name || !insert.newField.Type">Add Extra Field</button>
-      </fieldset>
-    </form>
-  </div>
-
-  <div class="alert-container">
-    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)" ng-bind="alert.msg"></alert>
-  </div>
+  <af-input-type type="InsertRowController.type" model="InsertRowController.value">
 </div>
 
 <div class="modal-footer">
-  <button ng-click="doInsert(true)" class="btn btn-primary">Insert and Close</button>
-  <button ng-click="doInsert(false)" class="btn btn-default">Insert and Insert More</button>
+  <button ng-click="InsertRowController.doInsert(true)" class="btn btn-primary">Insert and Close</button>
+  <button ng-click="InsertRowController.doInsert(false)" class="btn btn-default">Insert and Insert More</button>
   <button ng-click="$dismiss()" class="btn btn-default">Cancel</button>
 </div>
