@@ -16,6 +16,20 @@ angular.module('asterface', ['ngSanitize', 'ngRoute', 'ui.bootstrap'])
     }
   };
 
+  // helper function to create appropriate wrapper type
+  function createType(value){
+    if(types.isBasicType(value.type)){
+      return new types[value.type](value.value);
+    }
+
+    // otherwise treat as record ! NOT GOOD
+    //else if(base.datatypes.indexOf(this.value[row].type) != -1){
+    else{
+      // is an existing type, just parse as a record
+      return new types['record'](value.value);
+    }
+  };
+
   var types = {
     int8: function(value){
       this.type = 'int8';
@@ -52,22 +66,7 @@ angular.module('asterface', ['ngSanitize', 'ngRoute', 'ui.bootstrap'])
       this.toString = function(){
         var dataFlattened = [];
         for(var row in this.value){
-          if(types.isBasicType(this.value[row].type)){
-            var tmp = new types[this.value[row].type](this.value[row].value);
-            dataFlattened.push(
-              sprintf('"%s": %s', row, tmp.toString())
-            );
-          }
-
-          // otherwise treat as record ! NOT GOOD
-          //else if(base.datatypes.indexOf(this.value[row].type) != -1){
-          else{
-            // is an existing type, just parse as a record
-            var tmp = new types['record'](this.value[row].value);
-            dataFlattened.push(
-              sprintf('"%s": %s', row, tmp.toString())
-            );
-          }
+          dataFlattened.push(sprintf('"%s": %s', row, createType(this.value[row]).toString()));
         };
         return '{' + dataFlattened.join(',') + '}';
       };
@@ -75,8 +74,15 @@ angular.module('asterface', ['ngSanitize', 'ngRoute', 'ui.bootstrap'])
     bag: function(value){
       throw 'Creating bag types are not implemented yet!';
     },
-    orderedlist: function(value){
-      throw 'Creating ordered lists (arrays) are not implemented yet!';
+    orderedList: function(value){
+      this.value = value;
+      this.toString = function(){
+        var dataFlattened = [];
+        this.value.forEach(function(value){
+          dataFlattened.push(createType(value).toString());
+        });
+        return '[' + dataFlattened.join(',') + ']';
+      }
     },
     getTypeName: function(obj){
       var result = false;

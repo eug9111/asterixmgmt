@@ -15,6 +15,10 @@ angular.module('asterface')
     return Base.datatypes.hasOwnProperty(type);
   };
 
+  this.getTypes = function(){
+    return base.datatypes;
+  };
+
   this.field = $scope.field;
 }])
 .directive('afAdm', ['$compile', 'asterix', function($compile, asterix){
@@ -199,23 +203,26 @@ angular.module('asterface')
     }
   };
 }])
-.directive('afInputRecord', ['types', function(Types){
+.directive('afInputRecord', ['types', 'base', function(Types, Base){
   return {
     restrict: 'E',
     scope: {
       model: '=',
     },
-    templateUrl: 'partials/directives/inputs/record.html',
-    link: function(scope, element, attrs){
-      scope.model = Object.create(null);
-      scope.addField = function(){
-        scope.model[scope.fieldKey] = null;
+    controller: function($scope){
+      this.value = $scope.model = {};
+      this.addField = function(){
+        this.value[this.newFieldName] = { type: this.newFieldType, value: null };
       };
 
-      scope.removeField = function(key){
-        delete scope.model[key];
+      this.removeField = function(key){
+        delete this.value[key];
       };
-    }
+
+      this.isOpen = true;
+    },
+    controllerAs: 'InputTypeController',
+    templateUrl: 'partials/directives/inputs/types.html',
   };
 }])
 .directive('afInputOrderedList', ['types', function(Types){
@@ -224,10 +231,20 @@ angular.module('asterface')
     scope: {
       model: '=',
     },
+    controller: function($scope){
+      this.value = $scope.model = [];
+
+      this.addValue = function(){
+        this.value.push({type: this.newFieldType, value: null});
+      }
+
+      this.removeValue = function(index){
+        this.value.splice(index, 1);
+      }
+
+    },
+    controllerAs: 'InputOrderedListController',
     templateUrl: 'partials/directives/inputs/orderedList.html',
-    link: function(scope, element, attrs){
-      scope.model = [];
-    }
   };
 }])
 .directive('afInputUnorderedList', ['types', function(Types){
@@ -267,9 +284,7 @@ angular.module('asterface')
           this.value[this.newFieldName] = { type: this.newFieldType, value: null };
         };
 
-        this.getTypes = function(){
-          return base.datatypes;
-        }
+
       }
     },
     controllerAs: 'InputTypeController',
