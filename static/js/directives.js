@@ -225,26 +225,26 @@ angular.module('asterface')
     templateUrl: 'partials/directives/inputs/types.html',
   };
 }])
+.controller('afInputListController', ['$scope', function($scope){
+  this.value = $scope.model = [];
+
+  this.addValue = function(){
+    this.value.push({type: this.newFieldType, value: null});
+  };
+
+  this.removeValue = function(index){
+    this.value.splice(index, 1);
+  };
+}])
 .directive('afInputOrderedList', ['types', function(Types){
   return {
     restrict: 'E',
     scope: {
       model: '=',
     },
-    controller: function($scope){
-      this.value = $scope.model = [];
-
-      this.addValue = function(){
-        this.value.push({type: this.newFieldType, value: null});
-      }
-
-      this.removeValue = function(index){
-        this.value.splice(index, 1);
-      }
-
-    },
-    controllerAs: 'InputOrderedListController',
-    templateUrl: 'partials/directives/inputs/orderedList.html',
+    controller: 'afInputListController',
+    controllerAs: 'InputListController',
+    templateUrl: 'partials/directives/inputs/list.html',
   };
 }])
 .directive('afInputUnorderedList', ['types', function(Types){
@@ -253,10 +253,9 @@ angular.module('asterface')
     scope: {
       model: '=',
     },
-    templateUrl: 'partials/directives/inputs/unorderedList.html',
-    link: function(scope, element, attrs){
-      scope.model = [];
-    }
+    controller: 'afInputListController',
+    controllerAs: 'InputListController',
+    templateUrl: 'partials/directives/inputs/list.html',
   };
 }])
 .directive('afInputType', ['types', 'base', function(types, base){

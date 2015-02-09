@@ -61,6 +61,12 @@ angular.module('asterface', ['ngSanitize', 'ngRoute', 'ui.bootstrap'])
         return '"' + this.value + '"';
       }
     },
+    boolean: function(value){
+      this.value = value;
+      this.toString = function(){
+        return this.value;
+      }
+    },
     record: function(value){
       this.value = value;
       this.toString = function(){
@@ -71,8 +77,14 @@ angular.module('asterface', ['ngSanitize', 'ngRoute', 'ui.bootstrap'])
         return '{' + dataFlattened.join(',') + '}';
       };
     },
-    bag: function(value){
-      throw 'Creating bag types are not implemented yet!';
+    unorderedList: function(value){
+      this.value = value;
+      this.toString = function(){
+        var result = '{{ ' + this.value.map(function(value){
+          return createType(value).toString();
+        }).join(', ') + ' }}';
+        return result;
+      }
     },
     orderedList: function(value){
       this.value = value;
