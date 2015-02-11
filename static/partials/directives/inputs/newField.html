@@ -1,0 +1,32 @@
+<form ng-submit="NewFieldController.submit()">
+  <fieldset>
+    <legend>New Field</legend>
+    <div ng-if="NewFieldController.withName">
+      <label>Field Name:</label> <input ng-model="NewFieldController.name" type="text">
+    </div>
+    <label>Field Type:</label>
+    <select ng-model="NewFieldController.type">
+      <option value="string">String</option>
+      <option value="boolean">Boolean</option>
+      <option value="int8">Int8</option>
+      <option value="int16">Int16</option>
+      <option value="int32">Int32</option>
+      <option value="int64">Int64</option>
+      <option value="float">Float</option>
+      <option value="double">Double</option>
+      <option value="point">Point</option>
+      <option value="line">Line</option>
+      <option value="circle">Circle</option>
+      <option value="polygon">Polygon</option>
+      <option value="date">Date</option>
+      <option value="time">Time</option>
+      <option value="datetime">Date/Time</option>
+      <option value="interval">Interval</option>
+      <option value="record">Record</option>
+      <option value="unorderedList">Unordered List</option>
+      <option value="orderedList">Ordered List</option>
+      <option ng-repeat="(customType, _) in NewFieldController.getTypes()" ng-bind="customType" ng-value="customType"></option>
+    </select><br>
+    <button type="submit" value="Add Field" ng-disabled="!NewFieldController.name || !NewFieldController.type">Add Extra Field</button>
+  </fieldset>
+</form>

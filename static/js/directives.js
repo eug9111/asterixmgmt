@@ -211,8 +211,8 @@ angular.module('asterface')
     },
     controller: function($scope){
       this.value = $scope.model = {};
-      this.addField = function(){
-        this.value[this.newFieldName] = { type: this.newFieldType, value: null };
+      this.addField = function(name, type){
+        this.value[name] = { type: type, value: null };
       };
 
       this.removeField = function(key){
@@ -228,8 +228,8 @@ angular.module('asterface')
 .controller('afInputListController', ['$scope', function($scope){
   this.value = $scope.model = [];
 
-  this.addValue = function(){
-    this.value.push({type: this.newFieldType, value: null});
+  this.addValue = function(type){
+    this.value.push({type: type, value: null});
   };
 
   this.removeValue = function(index){
@@ -279,8 +279,8 @@ angular.module('asterface')
       })
 
       if(this.isOpen){
-        this.addField = function(){
-          this.value[this.newFieldName] = { type: this.newFieldType, value: null };
+        this.addField = function(name, type){
+          this.value[name] = { type: type, value: null };
         };
 
 
@@ -290,5 +290,29 @@ angular.module('asterface')
     link: function(scope, element, attrs, ctrl){
 
     }
+  }
+}])
+.directive('afInputNewField', ['base', function(base){
+  return {
+    restrict: 'E',
+    scope: {
+      withName: '=',
+      onAdd: '&onAdd',
+    },
+    templateUrl: 'partials/directives/inputs/newField.html',
+    controller: function($scope){
+      this.withName = $scope.withName;
+      this.onAdd = $scope.onAdd;
+      if(!this.withName) this.newFieldName = true;
+
+      this.submit = function(){
+        this.onAdd({name: this.name, type: this.type});
+      }
+
+      this.getTypes = function(){
+        return base.datatypes;
+      }
+    },
+    controllerAs: 'NewFieldController',
   }
 }])
