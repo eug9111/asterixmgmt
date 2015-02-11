@@ -303,7 +303,7 @@ angular.module('asterface')
     controller: function($scope){
       this.withName = $scope.withName;
       this.onAdd = $scope.onAdd;
-      if(!this.withName) this.newFieldName = true;
+      if(!this.withName) this.name = true;
 
       this.submit = function(){
         this.onAdd({name: this.name, type: this.type});
