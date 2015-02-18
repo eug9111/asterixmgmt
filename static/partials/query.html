@@ -1,16 +1,17 @@
 <div ng-if="base.currentDataverse">Using <i ng-bind="base.currentDataverse"></i>.</div>
 <form ng-submit="QueryController.loadQuery()">
-  <div ng-if="QueryController.history.length>0">
-    <b>History</b>
-    <select ng-change="QueryController.loadHistory()" ng-model="QueryController.oldQuery">
-      <option ng-repeat="q in QueryController.history track by $index" ng-value="q" ng-bind="q"></option>
-    </select>
   </div>
   <textarea ng-model="QueryController.query" class="query-box">
   </textarea>
   <button class="btn btn-primary" type="submit">Query!</button>
 </form>
 
-<div class="record" ng-repeat="record in QueryController.results">
-  <af-adm value="record"></af-adm>
+<div class="history" ng-repeat="item in QueryController.history|orderBy:'id':true">
+  <div class="date" ng-bind="item.printDate()"></div>
+  <div class="body">
+    <b>Query</b> <i><div class="query" ng-bind="item.query"></div></i>
+    <div class="result">
+      <af-adm value="item.result"></af-adm>
+    </div>
+  </div>
 </div>

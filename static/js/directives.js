@@ -64,13 +64,15 @@ angular.module('asterface')
               speed: 0
             });
           }
-          else if(scope.value.hasOwnProperty('orderedlist')){
-            var header = angular.element('<div class="collapsible orderedlist">Ordered List (' + scope.value.orderedlist.length + ') <span class="open-icon">[+]</span><span class="close-icon">[-]</span></div>');
+          else if(scope.value.hasOwnProperty('orderedlist') || angular.isArray(scope.value)){
+            var array = angular.isArray(scope.value)? scope.value : scope.value.orderedlist;
+
+            var header = angular.element('<div class="collapsible orderedlist">Ordered List (' + array.length + ') <span class="open-icon">[+]</span><span class="close-icon">[-]</span></div>');
             var table = angular.element('<table class="content"></table>');
             element.append(header);
             element.append(table);
 
-            angular.forEach(scope.value.orderedlist, function(valEl){
+            angular.forEach(array, function(valEl){
               var childScope = scope.$new(true);
               childScope.value = valEl;
               var compiled = $compile('<tr><td><af-adm value="value"></af-adm></td></tr>')(childScope);

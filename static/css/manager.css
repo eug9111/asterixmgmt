@@ -156,3 +156,13 @@ span.boolean{
 tr.extra-field th{
   background:darkred;
 }
+
+div.history{
+  border:1px solid black;
+  padding:0.2em;
+  margin-bottom:0.2em;
+}
+
+div.history div.date{
+  border-bottom:1px solid black;
+}

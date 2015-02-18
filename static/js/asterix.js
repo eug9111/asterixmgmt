@@ -112,7 +112,30 @@ angular.module('asterface', ['ngSanitize', 'ngRoute', 'ui.bootstrap'])
     },
     isBasicType: function(typeName){
       // HACKY
-      return typeName in this;
+      var basicTypes = {
+        'int8': true,
+        'int16': true,
+        'int32': true,
+        'int64': true,
+        'double': true,
+        'float': true,
+        'boolean': true,
+        'string': true,
+        'point': true,
+        'line': true,
+        'rectangle': true,
+        'circle': true,
+        'polygon': true,
+        'record': true,
+        'orderedList': true,
+        'unorderedList': true,
+        'date': true,
+        'time': true,
+        'datetime': true,
+        'interval': true,
+
+      };
+      return typeName in basicTypes;
     }
   };
   types.int8.prototype = NumberPrototype;
