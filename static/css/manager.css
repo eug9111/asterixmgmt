@@ -159,10 +159,15 @@ tr.extra-field th{
 
 div.history{
   border:1px solid black;
-  padding:0.2em;
+  padding:0.2em 0;
   margin-bottom:0.2em;
 }
 
 div.history div.date{
   border-bottom:1px solid black;
+}
+
+.history .footer{
+  border-top:1px solid black;
+  margin-top:0.2em;
 }

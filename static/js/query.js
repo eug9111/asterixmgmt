@@ -20,7 +20,7 @@ angular.module('asterface')
     this.id = ctrl.queryId++;
 
     this.printDate = function(){
-      return sprintf("Query completed on %d:%d:%d",
+      return sprintf("Query completed on %s:%s:%s",
         this.time.getHours(),
         this.time.getMinutes(),
         this.time.getSeconds());

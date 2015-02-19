@@ -9,9 +9,16 @@
 <div class="history" ng-repeat="item in QueryController.history|orderBy:'id':true">
   <div class="date" ng-bind="item.printDate()"></div>
   <div class="body">
-    <b>Query</b> <i><div class="query" ng-bind="item.query"></div></i>
+    <div class="query">
+      <b>Query</b>:
+      <i ng-bind="item.query"></i>
+    </div>
     <div class="result">
+      <b>Results</b>
       <af-adm value="item.result"></af-adm>
     </div>
+  </div>
+  <div class="footer">
+    <button ng-click="QueryController.removeHistoryItem($index)">X</button>
   </div>
 </div>
