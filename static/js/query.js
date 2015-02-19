@@ -43,6 +43,8 @@ angular.module('asterface')
   };
 
   this.removeHistoryItem = function(index){
+    // index is opposite because the order shown is reversed
+    index = this.history.length-index-1;
     this.history.splice(index, 1);
   }
 
